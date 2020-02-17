@@ -1,15 +1,25 @@
 // Reducers specify how the applications state changes in response to actions that are sent to the store. Remember that actions can only describe what happened, but don't describe how the applications state changes.
 
-import { VisibilityFilters, SET_VISIBILITY_FILTER, ADD_TODO } from "./actions";
-import combineReducers from "redux";
+import { combineReducers } from "redux";
+import {
+  ADD_TODO,
+  TOGGLE_TODO,
+  SET_VISIBILITY_FILTER,
+  VisibilityFilters
+} from "./actions";
 
 const { SHOW_ALL } = VisibilityFilters;
 
-// Creating the initial state of our app
-const initialState = {
-  visibilityFilter: VisibilityFilters.SHOW_ALL,
-  todos: []
-};
+// Extracted reducer managing just the visibility filter for SHOW_ALL?
+function visibilityFilter(state = SHOW_ALL, action) {
+  switch (action.type) {
+    // ACTION 3
+    case SET_VISIBILITY_FILTER:
+      return action.filter;
+    default:
+      return state;
+  }
+}
 
 // Updating todo's
 // ES6 initial state function, case must always return default.
@@ -27,38 +37,17 @@ function todos(state = [], action) {
       ];
     // Action 2 - Unsure I completely understand this action.. return NOT completed todos?
     case TOGGLE_TODO:
-      return Object.assign({}, state, {
-        todos: state.todos.map((todo, index) => {
-          if (index === action.index) {
-            return Object.assign({}, todo, {
-              completed: !todo.completed
-            });
-          }
-          return todo;
-        })
+      return state.map((todo, index) => {
+        if (index === action.index) {
+          return Object.assign({}, todo, {
+            completed: !todo.completed
+          });
+        }
+        return todo;
       });
     default:
       return state;
   }
-}
-
-// Extracted reducer managing just the visibility filter for SHOW_ALL?
-function visibilityFilter(state = SHOW_ALL, action) {
-  switch (action.type) {
-    // ACTION 3
-    case SET_VISIBILITY_FILTER:
-      return action.filter;
-    default:
-      return state;
-  }
-}
-
-// Because we're now extracting the reducer we can change the syntax below
-function todoApp(state = [], action) {
-  return {
-    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-    todos: todos(state.todos, action)
-  };
 }
 
 // Now each of the above reducers is managing it's own part of the global state, the state parameter is different for each one of these reducers and corresponds to the part of the state it managers.
@@ -103,4 +92,18 @@ export default todoApp;
 
 //   // Don't handle any actions just return the state given to us
 //   return state;
+// }
+
+// Creating the initial state of our app
+// const initialState = {
+//   visibilityFilter: VisibilityFilters.SHOW_ALL,
+//   todos: []
+// };
+
+// Because we're now extracting the reducer we can change the syntax below
+// function todoApp(state = [], action) {
+//   return {
+//     visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+//     todos: todos(state.todos, action)
+//   };
 // }
