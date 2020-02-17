@@ -1,0 +1,1 @@
+// Reducers specify how the applications state changes in response to actions that are sent to the store. Remember that actions can only describe what happened, but don't describe how the applications state changes.
