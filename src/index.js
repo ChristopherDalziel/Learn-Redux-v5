@@ -6,7 +6,6 @@
 // - Handles unregistering of listeners vis the function returned by subscribe(listener);
 
 import React from "react";
-import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -37,7 +36,7 @@ store.dispatch(addTodo("Learn about reducers"));
 store.dispatch(addTodo("Learn about store"));
 store.dispatch(toggleTodo(0));
 store.dispatch(toggleTodo(1));
-store.dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED));
+// store.dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED));
 
 // Stop listening to state updates
 unsubscribe();
